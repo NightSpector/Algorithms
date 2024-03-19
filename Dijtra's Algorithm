@@ -1,1 +1,44 @@
-
+// Program To Implement Dijtra's Algorithm to find shortest path
+#include<bits/stdc++.h>
+using namespace std;
+// We define the value of infinity as a large value
+const int inf = 1e9;
+signed main()
+{
+    cout << "Enter the number of vertices and edges with a space between them" << endl;
+    int no_vertices, no_edges;  cin >> no_vertices >> no_edges;
+    vector<int> distance(no_vertices+1, inf);
+    vector<vector<pair<int,int>>> graph(no_edges+1);
+    // Taking the First and Second vertex and the weight and pushing it into
+    // The vector graph
+    cout << "Enter the first vertex, second vertex, weight with a space between them" << endl;
+    for (int i = 0; i < no_edges; ++i) {
+        int u,v,w; cin >> u >> v >> w;
+        graph[u].push_back({v,w});
+        graph[v].push_back({u,w});
+    }
+    // Taking the source vertex as the input
+    int source_vertex;
+    cout << "Enter the Source Vertex" << endl; cin >> source_vertex;
+    distance[source_vertex] = 0;
+    set<pair<int,int>> s;
+    s.insert({0,source_vertex});
+    while (!s.empty()) {
+        auto x = *(s.begin());
+        s.erase(x);
+        for (auto it : graph[x.second]) {
+            if (distance[it.first] > distance[x.second] + it.second) {
+                s.erase({distance[it.first], it.first});
+                distance[it.first] = distance[x.second] + it.second;
+                s.insert({distance[it.first], it.first});
+            }
+        }5
+    }
+    for(int i = 1 ; i <= no_vertices ; i++) {
+        if (distance[i] < inf) {
+            cout<<"Distance from"<<" "<<source_vertex<<" "<<"to"<<" "<<i<<" "<<"is"<<" "<< distance[i] << endl;
+        }
+        else
+            cout << -1 << " ";
+    }
+}
